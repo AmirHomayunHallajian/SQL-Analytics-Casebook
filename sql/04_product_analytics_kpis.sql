@@ -1,0 +1,10 @@
+SELECT strftime('%Y-%m',event_date) month,COUNT(DISTINCT user_id) mau FROM product_events GROUP BY 1;
+SELECT strftime('%Y-%W',event_date) week,COUNT(DISTINCT user_id) wau FROM product_events GROUP BY 1;
+SELECT event_date,COUNT(DISTINCT user_id) dau FROM product_events GROUP BY 1;
+SELECT u.user_role,COUNT(DISTINCT p.user_id) active_users FROM product_events p JOIN users u USING(user_id) GROUP BY 1;
+SELECT product_area,COUNT(*) event_volume FROM product_events GROUP BY 1;
+SELECT user_id,COUNT(DISTINCT session_id) sessions FROM product_events GROUP BY 1;
+SELECT site_id,COUNT(*) forms_completed FROM product_events WHERE event_type='complete_form' GROUP BY 1;
+SELECT COUNT(*) training_events FROM product_events WHERE event_type='complete_training';
+SELECT site_id,ROUND(1.0*SUM(CASE WHEN event_type IN ('complete_training','complete_form') THEN 1 ELSE 0 END)/COUNT(*),3) adoption_score FROM product_events GROUP BY 1;
+SELECT u.user_id FROM users u LEFT JOIN product_events p ON u.user_id=p.user_id AND p.event_date>=date('now','-30 day') GROUP BY u.user_id HAVING COUNT(p.event_id)=0;

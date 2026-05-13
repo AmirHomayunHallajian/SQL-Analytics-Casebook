@@ -1,0 +1,1 @@
+All data in this repository is synthetic and for portfolio demonstration only. CSV data is generated into `data/processed/`, query outputs are saved to `data/outputs/`, and the SQLite database is built in `db/`. No sensitive or real clinical data is used.
