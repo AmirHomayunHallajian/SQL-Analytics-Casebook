@@ -1,22 +1,24 @@
+.PHONY: install data db queries validate test all clean
+
 install:
 	pip install -r requirements.txt
 
 data:
 	python scripts/generate_synthetic_data.py
 
-db:
+db: data
 	python scripts/build_sqlite_db.py
 
-queries:
+queries: db
 	python scripts/run_all_queries.py
 
-validate:
+validate: queries
 	python scripts/validate_outputs.py
 
-test:
+test: validate
 	pytest
 
-all: data db queries validate
+all: validate
 
 clean:
 	find . -type d -name "__pycache__" -prune -exec rm -rf {} +
